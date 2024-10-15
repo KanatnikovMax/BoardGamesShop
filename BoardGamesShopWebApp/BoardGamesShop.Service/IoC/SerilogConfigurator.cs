@@ -1,6 +1,6 @@
 ﻿using Serilog;
 
-namespace BoardGamesShopWebApp.LoC;
+namespace BoardGamesShopWebApp.IoC;
 
 public class SerilogConfigurator
 {

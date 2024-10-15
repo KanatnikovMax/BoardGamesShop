@@ -1,4 +1,4 @@
-﻿namespace BoardGamesShopWebApp.LoC;
+﻿namespace BoardGamesShopWebApp.IoC;
 
 public static class SwaggerConfigurator
 {

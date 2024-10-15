@@ -1,4 +1,4 @@
-﻿using BoardGamesShopWebApp.LoC;
+﻿using BoardGamesShopWebApp.IoC;
 
 var builder = WebApplication.CreateBuilder(args);
 
