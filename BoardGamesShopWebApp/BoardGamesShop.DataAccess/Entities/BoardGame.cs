@@ -11,4 +11,8 @@ public class BoardGame : BaseEntity
     public int MinAge { get; set; }
     public string Publisher { get; set; }
     public string Description { get; set; }
+    
+    public List<GameDay> GameDays { get; set; }
+    
+    public List<PurchaseHistory> PurchaseHistory { get; set; }
 }

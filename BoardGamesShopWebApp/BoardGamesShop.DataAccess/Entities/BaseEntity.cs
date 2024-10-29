@@ -2,7 +2,7 @@
 
 namespace BoardGamesShop.DataAccess.Entities;
 
-public class BaseEntity : IEntity
+public abstract class BaseEntity : IEntity
 {
     [Key]
     public int Id { get; set; }

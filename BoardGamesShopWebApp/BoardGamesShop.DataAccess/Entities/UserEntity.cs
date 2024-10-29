@@ -13,4 +13,8 @@ public class UserEntity : BaseEntity
     public string PasswordHash { get; set; }
     public string PhoneNumber { get; set; }
     public Role Role { get; set; }
+    
+    public List<PurchaseHistory> PurchaseHistory { get; set; }
+    
+    public List<GameDay> GameDays { get; set; }
 }

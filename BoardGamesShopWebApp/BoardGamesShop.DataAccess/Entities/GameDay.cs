@@ -13,4 +13,11 @@ public class GameDay : BaseEntity
     public int MinAge { get; set; }
     public int PeopleMax { get; set; }
     public int Price { get; set; }
+    
+    public int GameClubId { get; set; }
+    public GameClub GameClub { get; set; }
+    
+    public List<BoardGame> BoardGames { get; set; }
+    
+    public List<UserEntity> Users { get; set; }
 }

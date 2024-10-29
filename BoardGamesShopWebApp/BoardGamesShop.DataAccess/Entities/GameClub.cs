@@ -9,4 +9,6 @@ public class GameClub : BaseEntity
     public string Address { get; set; }
     public DateTime OpeningTime { get; set; }
     public DateTime ClosingTime { get; set; }
+    
+    public List<GameDay> GameDays { get; set; }
 }
