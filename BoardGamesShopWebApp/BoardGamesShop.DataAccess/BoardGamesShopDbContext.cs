@@ -12,6 +12,7 @@ public class BoardGamesShopDbContext : DbContext
     
     public BoardGamesShopDbContext(DbContextOptions options) : base(options)
     {
+        //Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
