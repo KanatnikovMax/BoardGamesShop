@@ -1,4 +1,5 @@
-﻿using BoardGamesShopWebApp.IoC;
+﻿using BoardGamesShopWebApp.DI;
+using BoardGamesShopWebApp.IoC;
 using BoardGamesShopWebApp.Settings;
 
 var configuration = new ConfigurationBuilder()
@@ -9,15 +10,11 @@ var settings = BoardGamesShopSettingsReader.Read(configuration);
 
 var builder = WebApplication.CreateBuilder(args);
 
-DbContextConfigurator.ConfigureService(builder.Services, settings);
-SerilogConfigurator.ConfigureService(builder);
-SwaggerConfigurator.ConfigureServices(builder.Services);
+AppConfigurator.ConfigureServices(builder, settings);
 
 var app = builder.Build();
 
-SerilogConfigurator.ConfigureApplication(app);
-SwaggerConfigurator.ConfigureApplication(app);
-DbContextConfigurator.ConfigureApplication(app);
+AppConfigurator.ConfigureApplication(app);
 
 app.UseHttpsRedirection();
 
