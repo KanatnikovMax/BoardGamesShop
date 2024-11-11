@@ -5,6 +5,7 @@ namespace BoardGamesShop.DataAccess.Entities;
 [Table("users")]
 public class UserEntity : BaseEntity
 {
+    public string Login { get; set; }
     public string FirstName { get; set; } 
     public string LastName { get; set; }
     public string Patronymic { get; set; }
