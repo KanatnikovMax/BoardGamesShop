@@ -16,6 +16,4 @@ var app = builder.Build();
 
 AppConfigurator.ConfigureApplication(app);
 
-app.UseHttpsRedirection();
-
 app.Run();
