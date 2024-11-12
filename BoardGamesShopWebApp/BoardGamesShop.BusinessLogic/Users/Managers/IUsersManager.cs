@@ -5,8 +5,7 @@ namespace BoardGamesShop.BusinessLogic.Users.Managers;
 public interface IUsersManager
 {
     UserModel CreateUser(CreateUserModel model);
-    // TODO: добавить изменение
     void DeleteUser(int userId);
-    //UserModel UpdateUser(UpdateUserModel user);
+    UserModel UpdateUser(UpdateUserModel model, int userId);
 
 }

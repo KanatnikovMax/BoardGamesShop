@@ -32,4 +32,17 @@ public class UsersManager : IUsersManager
         }
         _usersRepository.Delete(entity);
     }
+
+
+    public UserModel UpdateUser(UpdateUserModel model, int userId)
+    {
+        var entity = _usersRepository.GetById(userId);
+        if (entity == null)
+        {
+            throw new ArgumentException("User not found");
+        }
+        entity = _mapper.Map<UserEntity>(model);
+        entity = _usersRepository.Save(entity);
+        return _mapper.Map<UserModel>(entity);
+    }
 }

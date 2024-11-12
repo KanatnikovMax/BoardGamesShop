@@ -17,5 +17,11 @@ public class UsersBLProfile : Profile
             .ForMember(dest => dest.ExternalId, opt => opt.Ignore())
             .ForMember(dest => dest.CreationTime, opt => opt.Ignore())
             .ForMember(dest => dest.ModificationTime, opt => opt.Ignore());
+        
+        CreateMap<UpdateUserModel, UserEntity>()
+            .ForMember(dest => dest.CreationTime, opt => opt.Ignore())
+            .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.FullName.Split()[0]))
+            .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FullName.Split()[1]))
+            .ForMember(dest => dest.Patronymic, opt => opt.MapFrom(src => src.FullName.Split()[2]));
     }
 }
