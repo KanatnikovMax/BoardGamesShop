@@ -5,14 +5,14 @@ using BoardGamesShop.DataAccess.Repository;
 
 namespace BoardGamesShop.BusinessLogic.Users.Managers;
 
-public class UserProvider : IUsersProvider
+public class UsersProvider : IUsersProvider
 {
-    private readonly IRepository<UserEntity> _userRepository;
+    private readonly IRepository<UserEntity> _usersRepository;
     private readonly IMapper _mapper;
     
-    public UserProvider(IRepository<UserEntity> userRepository, IMapper mapper)
+    public UsersProvider(IRepository<UserEntity> usersRepository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _usersRepository = usersRepository;
         _mapper = mapper;
     }
 
@@ -25,7 +25,7 @@ public class UserProvider : IUsersProvider
         var role = filter?.Role;
         var creationTime = filter?.CreationTime;
         
-        var users = _userRepository.GetAll(u =>
+        var users = _usersRepository.GetAll(u =>
             (loginPart == null || u.Login.Contains(loginPart)) &&
             (emailPart == null || u.Email.Contains(emailPart)) &&
             (cityPart == null || u.City.Contains(cityPart)) &&
@@ -38,7 +38,7 @@ public class UserProvider : IUsersProvider
 
     public UserModel GetUserInfo(int userId)
     {
-        var user = _userRepository.GetById(userId);
+        var user = _usersRepository.GetById(userId);
         if (user is null)
         {
             throw new ArgumentException("User not found");
