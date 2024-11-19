@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BoardGamesShop.BusinessLogic.Users.Entities;
+using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.BusinessLogic.Users.Managers;
 using BoardGamesShopWebApp.Controllers.Users.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -66,5 +67,42 @@ public class UsersController : ControllerBase
         {
             Users = users.ToList()
         });
+    }
+
+    [HttpGet]
+    [Route("{id:int}")]
+    public IActionResult GetUserInfo([FromRoute] int id)
+    {
+        try
+        {
+            var user = _usersProvider.GetUserInfo(id);
+            return Ok(user);
+        }
+        catch (UserNotFoundException e)
+        {
+            _logger.Error(e.Message);
+            return NotFound(e.Message);
+        }
+    }
+
+    [HttpDelete]
+    [Route("[action]/{id:int}")]
+    public IActionResult Unregister([FromRoute] int id)
+    {
+        try
+        {
+            _usersManager.DeleteUser(id);
+            return Ok("User deleted successfully");
+        }
+        catch (UserNotFoundException e)
+        {
+            _logger.Error(e.Message);
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
+        }
     }
 }
