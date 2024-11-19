@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BoardGamesShop.BusinessLogic.Users.Entities;
+using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.DataAccess.Entities;
 using BoardGamesShop.DataAccess.Repository;
 
@@ -41,7 +42,7 @@ public class UsersProvider : IUsersProvider
         var user = _usersRepository.GetById(userId);
         if (user is null)
         {
-            throw new ArgumentException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         
         return _mapper.Map<UserModel>(user);

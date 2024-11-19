@@ -11,14 +11,18 @@ public class AppConfigurator
         SerilogConfigurator.ConfigureService(builder);
         SwaggerConfigurator.ConfigureServices(builder.Services);
         MapperConfigurator.ConfigureServices(builder.Services);
+        ServicesConfigurator.ConfigureServices(builder.Services, settings);
+
+        builder.Services.AddControllers();
     }
 
-    public static void ConfigureApplication(IApplicationBuilder app)
+    public static void ConfigureApplication(WebApplication app)
     {
         SerilogConfigurator.ConfigureApplication(app);
         SwaggerConfigurator.ConfigureApplication(app);
         DbContextConfigurator.ConfigureApplication(app);
-        
+
+        app.MapControllers();
         app.UseHttpsRedirection();
     }
 }

@@ -1,8 +1,8 @@
 ﻿using BoardGamesShop.DataAccess.Entities;
 
-namespace BoardGamesShop.BusinessLogic.Users.Entities;
+namespace BoardGamesShopWebApp.Controllers.Users.Entities;
 
-public class CreateUserModel
+public class RegisterUserRequest
 {
     public string Login { get; set; }
     public string LastName { get; set; }
