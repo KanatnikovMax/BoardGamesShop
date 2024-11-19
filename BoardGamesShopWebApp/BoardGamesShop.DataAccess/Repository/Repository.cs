@@ -6,9 +6,9 @@ namespace BoardGamesShop.DataAccess.Repository;
 
 public class Repository<T> : IRepository<T> where T : BaseEntity
 {
-    private readonly IDbContextFactory<DbContext> _contextFactory;
+    private readonly IDbContextFactory<BoardGamesShopDbContext> _contextFactory;
 
-    public Repository(IDbContextFactory<DbContext> contextFactory) 
+    public Repository(IDbContextFactory<BoardGamesShopDbContext> contextFactory) 
         => _contextFactory = contextFactory;
     
 
