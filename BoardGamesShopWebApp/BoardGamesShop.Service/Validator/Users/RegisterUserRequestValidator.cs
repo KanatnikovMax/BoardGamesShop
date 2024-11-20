@@ -1,4 +1,5 @@
-﻿using BoardGamesShopWebApp.Controllers.Users.Entities;
+﻿using BoardGamesShop.DataAccess.Entities;
+using BoardGamesShopWebApp.Controllers.Users.Entities;
 using FluentValidation;
 
 namespace BoardGamesShopWebApp.Validator.Users;
@@ -9,8 +10,9 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .EmailAddress()
             .WithMessage("Email address is required")
+            .EmailAddress()
+            .WithMessage("Email address is invalid")
             .MaximumLength(255)
             .WithMessage("Email must be less than 255 characters");
         
@@ -53,13 +55,13 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .WithMessage("First name is required")
             .MaximumLength(50)
             .WithMessage("First name must be less than 50 characters")
-            .Matches(@"[\w|-]+")
+            .Matches(@"\w+")
             .WithMessage("First name is invalid");
         
         RuleFor(x => x.Patronymic)
             .MaximumLength(50)
             .WithMessage("Patronymic must be less than 50 characters")
-            .Matches("w+")
+            .Matches(@"\w+")
             .WithMessage("Patronymic is invalid");
     }
 }
