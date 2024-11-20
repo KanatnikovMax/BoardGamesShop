@@ -10,7 +10,8 @@ public class UsersBLProfile : Profile
     {
         CreateMap<UserEntity, UserModel>()
             .ForMember(dest => dest.FullName, 
-                opt => opt.MapFrom(src => $"{src.LastName} {src.FirstName} {src.Patronymic}"));
+                opt => opt.MapFrom(src => $"{src.LastName} {src.FirstName}" +
+                                          $"{(src.Patronymic != null ? " " + src.Patronymic : src.Patronymic)}"));
         
         CreateMap<CreateUserModel, UserEntity>()
             .ForMember(dest => dest.Id, opt => opt.Ignore())

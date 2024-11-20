@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
 using BoardGamesShop.BusinessLogic.Users.Entities;
 using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.BusinessLogic.Users.Managers;
 using BoardGamesShopWebApp.Controllers.Users.Entities;
+using BoardGamesShopWebApp.Validator.Users;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
@@ -29,7 +31,17 @@ public class UsersController : ControllerBase
     [Route("[action]")]
     public IActionResult Register([FromQuery] RegisterUserRequest request)
     {
-        // TODO: тут должен вызываться валидатор
+        var validationResult = new RegisterUserRequestValidator().Validate(request);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
+            var stringBuilder = new StringBuilder();
+            foreach (var error in errors)
+                stringBuilder.AppendLine(error);
+            _logger.Error(stringBuilder.ToString());
+            return BadRequest(errors);
+        }
+        
         var createUserModel = _mapper.Map<CreateUserModel>(request);
         try
         {
@@ -115,7 +127,17 @@ public class UsersController : ControllerBase
     [Route("update/{id:int}")]
     public IActionResult Update([FromRoute] int id, [FromQuery] UpdateUserRequest request)
     {
-        // TODO: тут должен вызываться валидатор
+        var validationResult = new UpdateUserRequestValidator().Validate(request);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
+            var stringBuilder = new StringBuilder();
+            foreach (var error in errors)
+                stringBuilder.AppendLine(error);
+            _logger.Error(stringBuilder.ToString());
+            return BadRequest(errors);
+        }
+        
         var updateUserModel = _mapper.Map<UpdateUserModel>(request);
         try
         {
