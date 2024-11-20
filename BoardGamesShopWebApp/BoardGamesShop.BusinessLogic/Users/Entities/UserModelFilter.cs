@@ -9,5 +9,4 @@ public class UserModelFilter
     public string? CityPart { get; set; }
     public string? PhoneNumberPart { get; set; }
     public Role? Role { get; set; }
-    public DateTime? CreationTime { get; set; }
 }

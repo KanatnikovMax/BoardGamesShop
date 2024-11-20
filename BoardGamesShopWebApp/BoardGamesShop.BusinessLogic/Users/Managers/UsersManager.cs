@@ -42,7 +42,24 @@ public class UsersManager : IUsersManager
         {
             throw new UserNotFoundException("User not found");
         }
-        entity = _mapper.Map<UserEntity>(model);
+
+        entity = _mapper.Map<UpdateUserModel, UserEntity>(model, opts => opts.AfterMap(
+            (src, dest) =>
+            {
+                dest.Id = userId;
+                dest.ExternalId = entity.ExternalId;
+                dest.CreationTime = entity.CreationTime;
+                dest.Role = entity.Role;
+                dest.Login = src.Login is null ? entity.Login : dest.Login;
+                dest.PasswordHash = src.PasswordHash is null ? entity.PasswordHash : dest.PasswordHash;
+                dest.City = src.City is null ? entity.City : dest.City;
+                dest.PhoneNumber = src.PhoneNumber is null ? entity.PhoneNumber : dest.PhoneNumber;
+                dest.Email = src.Email is null ? entity.Email : dest.Email;
+                dest.LastName = src.LastName is null ? entity.LastName : dest.LastName;
+                dest.FirstName = src.FirstName is null ? entity.FirstName : dest.FirstName;
+                dest.Patronymic = src.Patronymic is null ? entity.Patronymic : dest.Patronymic;
+            }));
+        
         entity = _usersRepository.Save(entity);
         return _mapper.Map<UserModel>(entity);
     }

@@ -39,7 +39,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     public T Save(T entity)
     {
         using var dbContext = _contextFactory.CreateDbContext();
-        if (dbContext.Set<T>().Any(x => x.Id == entity.Id))
+        if (dbContext.Set<T>().AsNoTracking().Any(x => x.Id == entity.Id))
         {
             entity.ModificationTime = DateTime.UtcNow;
             var result = dbContext.Set<T>().Attach(entity);

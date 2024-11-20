@@ -24,15 +24,13 @@ public class UsersProvider : IUsersProvider
         var cityPart = filter?.CityPart;
         var phoneNumberPart = filter?.PhoneNumberPart;
         var role = filter?.Role;
-        var creationTime = filter?.CreationTime;
         
         var users = _usersRepository.GetAll(u =>
             (loginPart == null || u.Login.Contains(loginPart)) &&
             (emailPart == null || u.Email.Contains(emailPart)) &&
             (cityPart == null || u.City.Contains(cityPart)) &&
             (phoneNumberPart == null || u.PhoneNumber.Contains(phoneNumberPart)) &&
-            (role == null || u.Role == role) &&
-            (creationTime == null || u.CreationTime == creationTime));
+            (role == null || u.Role == role));
         
         return _mapper.Map<IEnumerable<UserModel>>(users);
     }

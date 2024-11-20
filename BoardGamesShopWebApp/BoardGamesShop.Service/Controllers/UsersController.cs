@@ -53,7 +53,7 @@ public class UsersController : ControllerBase
         var users = _usersProvider.GetAllUsers();
         return Ok(new UsersListResponse
         {
-            Users = users.ToList()
+            Users = users.OrderBy(u => u.Id).ToList()
         });
     }
 
@@ -93,6 +93,32 @@ public class UsersController : ControllerBase
         {
             _usersManager.DeleteUser(id);
             return Ok("User deleted successfully");
+        }
+        catch (UserNotFoundException e)
+        {
+            _logger.Error(e.Message);
+            return NotFound(e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
+        }
+    }
+    
+    [HttpPut]
+    [Route("update/{id:int}")]
+    public IActionResult Update([FromRoute] int id, [FromQuery] UpdateUserRequest request)
+    {
+        // TODO: тут должен вызываться валидатор
+        var updateUserModel = _mapper.Map<UpdateUserModel>(request);
+        try
+        {
+            var userModel = _usersManager.UpdateUser(updateUserModel, id);
+            return Ok(new UsersListResponse
+            {
+                Users = [userModel]
+            });
         }
         catch (UserNotFoundException e)
         {
