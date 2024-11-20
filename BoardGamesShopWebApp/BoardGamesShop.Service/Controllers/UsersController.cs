@@ -39,6 +39,11 @@ public class UsersController : ControllerBase
                 Users = [userModel]
             });
         }
+        catch (UserAlreadyExistsException e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
+        }
         catch (Exception e)
         {
             _logger.Error(e.Message);
@@ -124,6 +129,11 @@ public class UsersController : ControllerBase
         {
             _logger.Error(e.Message);
             return NotFound(e.Message);
+        }
+        catch (UserAlreadyExistsException e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
         }
         catch (Exception e)
         {

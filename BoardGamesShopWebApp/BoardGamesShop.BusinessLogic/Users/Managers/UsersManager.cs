@@ -20,8 +20,15 @@ public class UsersManager : IUsersManager
     public UserModel CreateUser(CreateUserModel model)
     {
        var entity = _mapper.Map<UserEntity>(model);
-       entity = _usersRepository.Save(entity);
-       return _mapper.Map<UserModel>(entity);
+       try
+       {
+           entity = _usersRepository.Save(entity);
+           return _mapper.Map<UserModel>(entity);
+       }
+       catch (Exception e)
+       {
+           throw new UserAlreadyExistsException("User already exists");
+       }
     }
 
     public void DeleteUser(int userId)
@@ -59,8 +66,15 @@ public class UsersManager : IUsersManager
                 dest.FirstName = src.FirstName is null ? entity.FirstName : dest.FirstName;
                 dest.Patronymic = src.Patronymic is null ? entity.Patronymic : dest.Patronymic;
             }));
+        try
+        {
+            entity = _usersRepository.Save(entity);
+            return _mapper.Map<UserModel>(entity);
+        }
+        catch (Exception e)
+        {
+            throw new UserAlreadyExistsException("User already exists");
+        }
         
-        entity = _usersRepository.Save(entity);
-        return _mapper.Map<UserModel>(entity);
     }
 }

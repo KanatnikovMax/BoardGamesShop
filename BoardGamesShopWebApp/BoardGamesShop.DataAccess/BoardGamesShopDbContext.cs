@@ -18,6 +18,11 @@ public class BoardGamesShopDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserEntity>().HasKey(x => x.Id);
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.ExternalId).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.Login).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.PhoneNumber).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.Email).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.PasswordHash).IsUnique();
         modelBuilder.Entity<PurchaseHistory>().HasKey(x => x.Id);
         modelBuilder.Entity<PurchaseHistory>()
             .HasOne(ph => ph.UserEntity)
