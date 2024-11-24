@@ -5,6 +5,7 @@ using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.BusinessLogic.Users.Managers;
 using BoardGamesShopWebApp.Controllers.Users.Entities;
 using BoardGamesShopWebApp.Validator.Users;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
@@ -29,9 +30,9 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("[action]")]
-    public IActionResult Register([FromQuery] RegisterUserRequest request)
+    public async Task<IActionResult> Register([FromQuery] RegisterUserRequest request)
     {
-        var validationResult = new RegisterUserRequestValidator().Validate(request);
+        var validationResult = await new RegisterUserRequestValidator().ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(x => x.ErrorMessage);
@@ -45,7 +46,7 @@ public class UsersController : ControllerBase
         var createUserModel = _mapper.Map<CreateUserModel>(request);
         try
         {
-            var userModel = _usersManager.CreateUser(createUserModel);
+            var userModel = await _usersManager.CreateUserAsync(createUserModel);
             return Ok(new UsersListResponse
             {
                 Users = [userModel]
@@ -65,9 +66,9 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("")]
-    public IActionResult GetAllUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
-        var users = _usersProvider.GetAllUsers();
+        var users = await _usersProvider.GetAllUsersAsync();
         return Ok(new UsersListResponse
         {
             Users = users.OrderBy(u => u.Id).ToList()
@@ -76,10 +77,10 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("filtered")]
-    public IActionResult GetFilteredUsers([FromQuery] UserFilter userFilter)
+    public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilter userFilter)
     {
         var userFilterModel = _mapper.Map<UserModelFilter>(userFilter);
-        var users = _usersProvider.GetAllUsers(userFilterModel);
+        var users = await _usersProvider.GetAllUsersAsync(userFilterModel);
         return Ok(new UsersListResponse
         {
             Users = users.ToList()
@@ -88,11 +89,11 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}")]
-    public IActionResult GetUserInfo([FromRoute] int id)
+    public async Task<IActionResult> GetUserInfo([FromRoute] int id)
     {
         try
         {
-            var user = _usersProvider.GetUserInfo(id);
+            var user = await _usersProvider.GetUserInfoAsync(id);
             return Ok(user);
         }
         catch (UserNotFoundException e)
@@ -104,11 +105,11 @@ public class UsersController : ControllerBase
 
     [HttpDelete]
     [Route("[action]/{id:int}")]
-    public IActionResult Unregister([FromRoute] int id)
+    public async Task<IActionResult> Unregister([FromRoute] int id)
     {
         try
         {
-            _usersManager.DeleteUser(id);
+            await _usersManager.DeleteUserAsync(id);
             return Ok("User deleted successfully");
         }
         catch (UserNotFoundException e)
@@ -125,9 +126,9 @@ public class UsersController : ControllerBase
     
     [HttpPut]
     [Route("update/{id:int}")]
-    public IActionResult Update([FromRoute] int id, [FromQuery] UpdateUserRequest request)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromQuery] UpdateUserRequest request)
     {
-        var validationResult = new UpdateUserRequestValidator().Validate(request);
+        var validationResult = await new UpdateUserRequestValidator().ValidateAsync(request);
         if (!validationResult.IsValid)
         {
             var errors = validationResult.Errors.Select(x => x.ErrorMessage);
@@ -141,7 +142,7 @@ public class UsersController : ControllerBase
         var updateUserModel = _mapper.Map<UpdateUserModel>(request);
         try
         {
-            var userModel = _usersManager.UpdateUser(updateUserModel, id);
+            var userModel = await _usersManager.UpdateUserAsync(updateUserModel, id);
             return Ok(new UsersListResponse
             {
                 Users = [userModel]

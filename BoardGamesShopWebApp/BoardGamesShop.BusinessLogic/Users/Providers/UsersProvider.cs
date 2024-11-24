@@ -34,15 +34,38 @@ public class UsersProvider : IUsersProvider
         
         return _mapper.Map<IEnumerable<UserModel>>(users);
     }
+    
+    public async Task<IEnumerable<UserModel>> GetAllUsersAsync(UserModelFilter filter = null)
+    {
+        var loginPart = filter?.LoginPart;
+        var emailPart = filter?.EmailPart;
+        var cityPart = filter?.CityPart;
+        var phoneNumberPart = filter?.PhoneNumberPart;
+        var role = filter?.Role;
+        
+        var users = await _usersRepository.GetAllAsync(u =>
+            (loginPart == null || u.Login.Contains(loginPart)) &&
+            (emailPart == null || u.Email.Contains(emailPart)) &&
+            (cityPart == null || u.City.Contains(cityPart)) &&
+            (phoneNumberPart == null || u.PhoneNumber.Contains(phoneNumberPart)) &&
+            (role == null || u.Role == role));
+        
+        return _mapper.Map<IEnumerable<UserModel>>(users);
+    }
 
     public UserModel GetUserInfo(int userId)
     {
-        var user = _usersRepository.GetById(userId);
-        if (user is null)
-        {
-            throw new UserNotFoundException("User not found");
-        }
+        var user = _usersRepository.GetById(userId) 
+                   ?? throw new UserNotFoundException("User not found");
         
+        return _mapper.Map<UserModel>(user);
+    }
+    
+    public async Task<UserModel> GetUserInfoAsync(int userId)
+    {
+        var user = await _usersRepository.GetByIdAsync(userId)
+                   ?? throw new UserNotFoundException("User not found");
+ 
         return _mapper.Map<UserModel>(user);
     }
 }
