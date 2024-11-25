@@ -47,4 +47,5 @@ ___
 ___
 
 ## Модель базы данных
-![ER_Model](https://github.com/user-attachments/assets/d9726992-bbeb-4184-ae04-8e4b994f9e09)
+![ER_Model](https://github.com/user-attachments/assets/22865046-591b-4895-bab4-db761e141d3c)
+
