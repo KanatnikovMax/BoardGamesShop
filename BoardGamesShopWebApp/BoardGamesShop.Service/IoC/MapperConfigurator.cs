@@ -9,8 +9,12 @@ public static class MapperConfigurator
     {
         services.AddAutoMapper(config =>
         {
+            // users
             config.AddProfile<UsersBLProfile>();
             config.AddProfile<UsersServiceProfile>();
+            // board games
+            config.AddProfile<BoardGamesBLProfile>();
+            config.AddProfile<BoardGamesServiceProfile>();
         });
     }
 }

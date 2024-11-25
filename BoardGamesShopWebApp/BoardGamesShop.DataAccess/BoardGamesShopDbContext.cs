@@ -30,6 +30,8 @@ public class BoardGamesShopDbContext : DbContext
             .HasForeignKey(ph => ph.UserEntityId);
         
         modelBuilder.Entity<BoardGame>().HasKey(x => x.Id);
+        modelBuilder.Entity<BoardGame>().HasIndex(x => x.ExternalId).IsUnique();
+        modelBuilder.Entity<BoardGame>().HasIndex(x => x.Name).IsUnique();
         modelBuilder.Entity<PurchaseHistory>()
             .HasOne(ph => ph.BoardGame)
             .WithMany(u => u.PurchaseHistory)

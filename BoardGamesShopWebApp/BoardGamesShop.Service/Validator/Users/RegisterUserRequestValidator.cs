@@ -39,7 +39,7 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .WithMessage("City is required")
             .MaximumLength(50)
             .WithMessage("City must be less than 50 characters")
-            .Matches(@"\w|-|\s")
+            .Matches(@"^[a-zA-Zа-яА-ЯёЁ-\s]+$")
             .WithMessage("City is invalid");
         
         RuleFor(x => x.LastName)
@@ -47,7 +47,7 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .WithMessage("Last name is required")
             .MaximumLength(50)
             .WithMessage("Last name must be less than 50 characters")
-            .Matches(@"[\w|-]+")
+            .Matches(@"^[a-zA-Zа-яА-ЯёЁ-]+$")
             .WithMessage("Last name is invalid");
         
         RuleFor(x => x.FirstName)
@@ -55,13 +55,13 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .WithMessage("First name is required")
             .MaximumLength(50)
             .WithMessage("First name must be less than 50 characters")
-            .Matches(@"\w+")
+            .Matches(@"^[a-zA-Zа-яА-ЯёЁ]+$")
             .WithMessage("First name is invalid");
         
         RuleFor(x => x.Patronymic)
             .MaximumLength(50)
             .WithMessage("Patronymic must be less than 50 characters")
-            .Matches(@"\w+")
+            .Matches(@"^[a-zA-Zа-яА-ЯёЁ]+$")
             .WithMessage("Patronymic is invalid");
     }
 }

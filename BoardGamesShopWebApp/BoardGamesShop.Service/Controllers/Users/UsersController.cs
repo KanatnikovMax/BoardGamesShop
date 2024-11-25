@@ -5,7 +5,6 @@ using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.BusinessLogic.Users.Managers;
 using BoardGamesShopWebApp.Controllers.Users.Entities;
 using BoardGamesShopWebApp.Validator.Users;
-using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
@@ -79,8 +78,8 @@ public class UsersController : ControllerBase
     [Route("filtered")]
     public async Task<IActionResult> GetFilteredUsers([FromQuery] UserFilter userFilter)
     {
-        var userFilterModel = _mapper.Map<UserModelFilter>(userFilter);
-        var users = await _usersProvider.GetAllUsersAsync(userFilterModel);
+        var userModelFilter = _mapper.Map<UserModelFilter>(userFilter);
+        var users = await _usersProvider.GetAllUsersAsync(userModelFilter);
         return Ok(new UsersListResponse
         {
             Users = users.ToList()
