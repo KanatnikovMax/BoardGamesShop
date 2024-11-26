@@ -10,5 +10,6 @@ public class BoardGamesServiceProfile : Profile
     {
         CreateMap<CreateBoardGameRequest, CreateBoardGameModel>();
         CreateMap<BoardGameFilter, BoardGameModelFilter>();
+        CreateMap<UpdateBoardGameRequest, UpdateBoardGameModel>();
     }
 }

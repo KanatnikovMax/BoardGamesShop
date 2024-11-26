@@ -127,4 +127,45 @@ public class BoardGamesController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+
+    [HttpPut]
+    [Route("update/{id:int}")]
+    public async Task<IActionResult> UpdateBoardGame([FromRoute] int id, [FromQuery] UpdateBoardGameRequest request)
+    {
+        var validationResult = await new UpdateBoardGameRequestValidator().ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            var errors = validationResult.Errors.Select(error => error.ErrorMessage);
+            var stringBuilder = new StringBuilder();
+            foreach (var error in errors)
+                stringBuilder.AppendLine(error);
+            _logger.Error(stringBuilder.ToString());
+            return BadRequest(errors);
+        }
+        
+        var updateBoardGameModel = _mapper.Map<UpdateBoardGameModel>(request);
+        try
+        {
+            var boardGameModel = await _boardGamesManager.UpdateBoardGameAsync(updateBoardGameModel, id);
+            return Ok(new BoardGamesListResponse
+            {
+                BoardGames = [boardGameModel]
+            });
+        }
+        catch (BoardGameNotFoundException e)
+        {
+            _logger.Error(e.Message);
+            return NotFound(e.Message);
+        }
+        catch (BoardGameAlreadyExistsException e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            return BadRequest(e.Message);
+        }
+    }
 }

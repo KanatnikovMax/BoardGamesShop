@@ -46,9 +46,9 @@ public class BoardGamesManager : IBoardGamesManager
         }
     }
 
-    public void DeleteBoardGame(int userId)
+    public void DeleteBoardGame(int id)
     {
-        var entity = _boardGamesRepository.GetById(userId);
+        var entity = _boardGamesRepository.GetById(id);
         if (entity == null)
         {
             throw new BoardGameNotFoundException("Board game not found");
@@ -56,13 +56,79 @@ public class BoardGamesManager : IBoardGamesManager
         _boardGamesRepository.Delete(entity);
     }
 
-    public async Task DeleteBoardGameAsync(int userId)
+    public async Task DeleteBoardGameAsync(int id)
     {
-        var entity = await _boardGamesRepository.GetByIdAsync(userId);
+        var entity = await _boardGamesRepository.GetByIdAsync(id);
         if (entity == null)
         {
             throw new BoardGameNotFoundException("Board game not found");
         }
         await _boardGamesRepository.DeleteAsync(entity);
+    }
+
+    public BoardGameModel UpdateBoardGame(UpdateBoardGameModel model, int id)
+    {
+        var entity = _boardGamesRepository.GetById(id);
+        if (entity == null)
+        {
+            throw new BoardGameNotFoundException("Board game not found");
+        }
+        
+        entity = _mapper.Map<UpdateBoardGameModel, BoardGame>(model, opts => opts.AfterMap(
+            (src, dest) =>
+            {
+                dest.Id = id;
+                dest.ExternalId = entity.ExternalId;
+                dest.ModificationTime = entity.ModificationTime;
+                dest.CreationTime = entity.CreationTime;
+                dest.Name = entity.Name;
+                dest.Genre = entity.Genre;
+                dest.Price = src.Price is null ? entity.Price : (int)src.Price;
+                dest.Publisher = entity.Publisher;
+                dest.MinAge = entity.MinAge;
+                dest.Description = src.Description is null ? entity.Description : src.Description;
+            }));
+        try
+        {
+            entity = _boardGamesRepository.Save(entity);
+            return _mapper.Map<BoardGameModel>(entity);
+        }
+        catch (Exception e)
+        {
+            throw new BoardGameAlreadyExistsException("Board game exists");
+        }
+    }
+
+    public async Task<BoardGameModel> UpdateBoardGameAsync(UpdateBoardGameModel model, int id)
+    {
+        var entity = await _boardGamesRepository.GetByIdAsync(id);
+        if (entity == null)
+        {
+            throw new BoardGameNotFoundException("Board game not found");
+        }
+        
+        entity = _mapper.Map<UpdateBoardGameModel, BoardGame>(model, opts => opts.AfterMap(
+            (src, dest) =>
+            {
+                dest.Id = id;
+                dest.ExternalId = entity.ExternalId;
+                dest.ModificationTime = entity.ModificationTime;
+                dest.CreationTime = entity.CreationTime;
+                dest.Name = entity.Name;
+                dest.Genre = entity.Genre;
+                dest.Price = src.Price is null ? entity.Price : (int)src.Price;
+                dest.Publisher = entity.Publisher;
+                dest.MinAge = entity.MinAge;
+                dest.Description = src.Description is null ? entity.Description : src.Description;
+            }));
+        try
+        {
+            entity = await _boardGamesRepository.SaveAsync(entity);
+            return _mapper.Map<BoardGameModel>(entity);
+        }
+        catch (Exception e)
+        {
+            throw new BoardGameAlreadyExistsException("Board game exists");
+        }
     }
 }

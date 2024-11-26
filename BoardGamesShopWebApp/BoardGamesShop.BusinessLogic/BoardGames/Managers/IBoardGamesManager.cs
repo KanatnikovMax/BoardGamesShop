@@ -6,8 +6,8 @@ public interface IBoardGamesManager
 {
     BoardGameModel CreateBoardGame(CreateBoardGameModel model);
     Task<BoardGameModel> CreateUBoardGameAsync(CreateBoardGameModel model);
-    void DeleteBoardGame(int userId);
-    Task DeleteBoardGameAsync(int userId);
-    /*BoardGameModel UpdateBoardGame(UpdateBoardGameModel model, int userId);
-    Task<BoardGameModel> UpdateBoardGameAsync(UpdateBoardGameModel model, int userId);*/
+    void DeleteBoardGame(int id);
+    Task DeleteBoardGameAsync(int id);
+    BoardGameModel UpdateBoardGame(UpdateBoardGameModel model, int id);
+    Task<BoardGameModel> UpdateBoardGameAsync(UpdateBoardGameModel model, int id);
 }
