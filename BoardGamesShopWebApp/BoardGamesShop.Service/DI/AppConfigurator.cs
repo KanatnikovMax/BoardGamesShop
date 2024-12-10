@@ -7,6 +7,7 @@ public class AppConfigurator
 {
     public static void ConfigureServices(WebApplicationBuilder builder, BoardGamesShopSettings settings)
     {
+        AuthorizationConfigurator.ConfigureServices(builder.Services, settings);
         DbContextConfigurator.ConfigureService(builder.Services, settings);
         SerilogConfigurator.ConfigureService(builder);
         SwaggerConfigurator.ConfigureServices(builder.Services);
@@ -18,11 +19,12 @@ public class AppConfigurator
 
     public static void ConfigureApplication(WebApplication app)
     {
+        AuthorizationConfigurator.ConfigureApplication(app);
         SerilogConfigurator.ConfigureApplication(app);
         SwaggerConfigurator.ConfigureApplication(app);
         DbContextConfigurator.ConfigureApplication(app);
 
         app.MapControllers();
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
     }
 }

@@ -6,7 +6,10 @@ public class BoardGamesShopSettingsReader
     {
         return new BoardGamesShopSettings()
         {
-            BoardGamesShopDbConnectionString = configuration.GetValue<string>("BoardGamesShopDbContext")
+            BoardGamesShopDbConnectionString = configuration.GetValue<string>("BoardGamesShopDbContext"),
+            IdentityServerUri = configuration.GetValue<string>("IdentityServerSettings:Uri"),
+            ClientId = configuration.GetValue<string>("IdentityServerSettings:ClientId"),
+            ClientSecret = configuration.GetValue<string>("IdentityServerSettings:ClientSecret")
         };
     }
 }
