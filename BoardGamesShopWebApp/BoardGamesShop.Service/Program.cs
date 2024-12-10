@@ -1,5 +1,4 @@
 ﻿using BoardGamesShopWebApp.DI;
-using BoardGamesShopWebApp.IoC;
 using BoardGamesShopWebApp.Settings;
 
 var configuration = new ConfigurationBuilder()

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BoardGamesShop.DataAccess.Repository;
 
-public class Repository<T> : IRepository<T> where T : BaseEntity
+public class Repository<T> : IRepository<T> where T : class, IEntity
 {
     private readonly IDbContextFactory<BoardGamesShopDbContext> _contextFactory;
 

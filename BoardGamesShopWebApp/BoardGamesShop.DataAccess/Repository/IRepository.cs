@@ -3,7 +3,7 @@ using BoardGamesShop.DataAccess.Entities;
 
 namespace BoardGamesShop.DataAccess.Repository;
 
-public interface IRepository<T> where T : BaseEntity
+public interface IRepository<T> where T : class, IEntity
 {
     IEnumerable<T> GetAll();
     Task<IEnumerable<T>> GetAllAsync();
