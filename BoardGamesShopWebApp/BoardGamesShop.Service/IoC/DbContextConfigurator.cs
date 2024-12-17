@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BoardGamesShopWebApp.IoC;
 
-public class DbContextConfigurator
+public static class DbContextConfigurator
 {
     public static void ConfigureService(IServiceCollection services, BoardGamesShopSettings settings)
     {

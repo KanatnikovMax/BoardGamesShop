@@ -2,7 +2,7 @@
 
 namespace BoardGamesShopWebApp.IoC;
 
-public class SerilogConfigurator
+public static class SerilogConfigurator
 {
     public static void ConfigureService(WebApplicationBuilder builder)
     {

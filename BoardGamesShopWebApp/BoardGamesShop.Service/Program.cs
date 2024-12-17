@@ -1,5 +1,4 @@
 ﻿using BoardGamesShopWebApp.DI;
-using BoardGamesShopWebApp.IoC;
 using BoardGamesShopWebApp.Settings;
 
 var configuration = new ConfigurationBuilder()
@@ -14,8 +13,6 @@ AppConfigurator.ConfigureServices(builder, settings);
 
 var app = builder.Build();
 
-AppConfigurator.ConfigureApplication(app);
-
-app.UseHttpsRedirection();
+await AppConfigurator.ConfigureApplication(app, settings);
 
 app.Run();

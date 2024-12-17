@@ -1,4 +1,5 @@
 ﻿using BoardGamesShop.DataAccess.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGamesShop.DataAccess;
@@ -12,12 +13,22 @@ public class BoardGamesShopDbContext : DbContext
     
     public BoardGamesShopDbContext(DbContextOptions options) : base(options)
     {
-        //Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("user_claims");
+        modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("user_logins").HasNoKey();
+        modelBuilder.Entity<IdentityUserToken<int>>().ToTable("user_tokens").HasNoKey();;
+        modelBuilder.Entity<UserRole>().ToTable("user_roles");
+        modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("user_role_claims");
+        modelBuilder.Entity<IdentityUserRole<int>>().ToTable("user_role_owners").HasNoKey();
+        
         modelBuilder.Entity<UserEntity>().HasKey(x => x.Id);
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.ExternalId).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.UserName).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.PhoneNumber).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.Email).IsUnique();
         modelBuilder.Entity<PurchaseHistory>().HasKey(x => x.Id);
         modelBuilder.Entity<PurchaseHistory>()
             .HasOne(ph => ph.UserEntity)
@@ -25,6 +36,8 @@ public class BoardGamesShopDbContext : DbContext
             .HasForeignKey(ph => ph.UserEntityId);
         
         modelBuilder.Entity<BoardGame>().HasKey(x => x.Id);
+        modelBuilder.Entity<BoardGame>().HasIndex(x => x.ExternalId).IsUnique();
+        modelBuilder.Entity<BoardGame>().HasIndex(x => x.Name).IsUnique();
         modelBuilder.Entity<PurchaseHistory>()
             .HasOne(ph => ph.BoardGame)
             .WithMany(u => u.PurchaseHistory)
