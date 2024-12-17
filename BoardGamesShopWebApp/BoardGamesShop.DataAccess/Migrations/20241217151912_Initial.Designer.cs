@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BoardGamesShop.DataAccess.Migrations
 {
     [DbContext(typeof(BoardGamesShopDbContext))]
-    [Migration("20241120183457_UniqueIndexesUserEntity")]
-    partial class UniqueIndexesUserEntity
+    [Migration("20241217151912_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,12 @@ namespace BoardGamesShop.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExternalId")
+                        .IsUnique();
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("board_games");
                 });
@@ -222,49 +228,71 @@ namespace BoardGamesShop.DataAccess.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
                     b.Property<string>("City")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("text");
+
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Role")
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("RoleId")
                         .HasColumnType("integer");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -274,16 +302,37 @@ namespace BoardGamesShop.DataAccess.Migrations
                     b.HasIndex("ExternalId")
                         .IsUnique();
 
-                    b.HasIndex("Login")
-                        .IsUnique();
-
-                    b.HasIndex("PasswordHash")
-                        .IsUnique();
-
                     b.HasIndex("PhoneNumber")
                         .IsUnique();
 
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("BoardGamesShop.DataAccess.Entities.UserRole", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_roles", (string)null);
                 });
 
             modelBuilder.Entity("GameDayUserEntity", b =>
@@ -299,6 +348,99 @@ namespace BoardGamesShop.DataAccess.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("user_game_day", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_role_claims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("user_claims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.ToTable("user_logins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.ToTable("user_role_owners", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.ToTable("user_tokens", (string)null);
                 });
 
             modelBuilder.Entity("BoardGameGameDay", b =>
@@ -344,6 +486,17 @@ namespace BoardGamesShop.DataAccess.Migrations
                     b.Navigation("BoardGame");
 
                     b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("BoardGamesShop.DataAccess.Entities.UserEntity", b =>
+                {
+                    b.HasOne("BoardGamesShop.DataAccess.Entities.UserRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("GameDayUserEntity", b =>

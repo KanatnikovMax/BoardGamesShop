@@ -4,12 +4,14 @@ public class BoardGamesShopSettingsReader
 {
     public static BoardGamesShopSettings Read(IConfiguration configuration)
     {
-        return new BoardGamesShopSettings()
+        return new BoardGamesShopSettings
         {
             BoardGamesShopDbConnectionString = configuration.GetValue<string>("BoardGamesShopDbContext"),
             IdentityServerUri = configuration.GetValue<string>("IdentityServerSettings:Uri"),
             ClientId = configuration.GetValue<string>("IdentityServerSettings:ClientId"),
-            ClientSecret = configuration.GetValue<string>("IdentityServerSettings:ClientSecret")
+            ClientSecret = configuration.GetValue<string>("IdentityServerSettings:ClientSecret"),
+            MasterAdminEmail = configuration.GetValue<string>("IdentityServerSettings:MasterAdminEmail"),
+            MasterAdminPassword = configuration.GetValue<string>("IdentityServerSettings:MasterAdminPassword")
         };
     }
 }

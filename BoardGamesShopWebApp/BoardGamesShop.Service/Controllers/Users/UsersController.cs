@@ -5,6 +5,7 @@ using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.BusinessLogic.Users.Managers;
 using BoardGamesShopWebApp.Controllers.Users.Entities;
 using BoardGamesShopWebApp.Validator.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
@@ -12,6 +13,8 @@ namespace BoardGamesShopWebApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+//[Authorize(Roles = "Employee")] TODO: аутентификация по ролям
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly IUsersManager _usersManager;
@@ -25,42 +28,6 @@ public class UsersController : ControllerBase
         _usersProvider = usersProvider;
         _mapper = mapper;
         _logger = logger;
-    }
-
-    [HttpPost]
-    [Route("[action]")]
-    public async Task<IActionResult> Register([FromQuery] RegisterUserRequest request)
-    {
-        var validationResult = await new RegisterUserRequestValidator().ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            var errors = validationResult.Errors.Select(x => x.ErrorMessage);
-            var stringBuilder = new StringBuilder();
-            foreach (var error in errors)
-                stringBuilder.AppendLine(error);
-            _logger.Error(stringBuilder.ToString());
-            return BadRequest(errors);
-        }
-        
-        var createUserModel = _mapper.Map<CreateUserModel>(request);
-        try
-        {
-            var userModel = await _usersManager.CreateUserAsync(createUserModel);
-            return Ok(new UsersListResponse
-            {
-                Users = [userModel]
-            });
-        }
-        catch (UserAlreadyExistsException e)
-        {
-            _logger.Error(e.Message);
-            return BadRequest(e.Message);
-        }
-        catch (Exception e)
-        {
-            _logger.Error(e.Message);
-            return BadRequest(e.Message);
-        }
     }
 
     [HttpGet]
@@ -95,7 +62,7 @@ public class UsersController : ControllerBase
             var user = await _usersProvider.GetUserInfoAsync(id);
             return Ok(user);
         }
-        catch (UserNotFoundException e)
+        catch (BusinessLogicException e) when (e.ResultCode == ResultCode.UserNotFound)
         {
             _logger.Error(e.Message);
             return NotFound(e.Message);
@@ -111,7 +78,7 @@ public class UsersController : ControllerBase
             await _usersManager.DeleteUserAsync(id);
             return Ok("User deleted successfully");
         }
-        catch (UserNotFoundException e)
+        catch (BusinessLogicException e) when (e.ResultCode == ResultCode.UserNotFound)
         {
             _logger.Error(e.Message);
             return NotFound(e.Message);
@@ -147,12 +114,12 @@ public class UsersController : ControllerBase
                 Users = [userModel]
             });
         }
-        catch (UserNotFoundException e)
+        catch (BusinessLogicException e) when (e.ResultCode == ResultCode.UserNotFound)
         {
             _logger.Error(e.Message);
             return NotFound(e.Message);
         }
-        catch (UserAlreadyExistsException e)
+        catch (BusinessLogicException e) when (e.ResultCode == ResultCode.UserAlreadyExists)
         {
             _logger.Error(e.Message);
             return BadRequest(e.Message);

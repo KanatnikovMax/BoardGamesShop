@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BoardGamesShop.BusinessLogic.Authorization;
 using BoardGamesShop.BusinessLogic.BoardGames.Managers;
 using BoardGamesShop.BusinessLogic.BoardGames.Providers;
 using BoardGamesShop.BusinessLogic.Users.Managers;
@@ -6,6 +7,7 @@ using BoardGamesShop.DataAccess;
 using BoardGamesShop.DataAccess.Entities;
 using BoardGamesShop.DataAccess.Repository;
 using BoardGamesShopWebApp.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGamesShopWebApp.IoC;
@@ -33,5 +35,14 @@ public static class ServicesConfigurator
         services.AddScoped<IBoardGamesManager>(x =>
             new BoardGamesManager(x.GetRequiredService<IRepository<BoardGame>>(),
                 x.GetRequiredService<IMapper>()));
+        //auth
+        services.AddScoped<IAuthorizationProvider>(x =>
+            new AuthorizationProvider(x.GetRequiredService<SignInManager<UserEntity>>(),
+                x.GetRequiredService<UserManager<UserEntity>>(),
+                x.GetRequiredService<IHttpClientFactory>(),
+                x.GetRequiredService<IMapper>(),
+                settings.IdentityServerUri,
+                settings.ClientId,
+                settings.ClientSecret));
     }
 }

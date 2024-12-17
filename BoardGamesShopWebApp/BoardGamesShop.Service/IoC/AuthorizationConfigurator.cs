@@ -14,15 +14,17 @@ public static class AuthorizationConfigurator
     public static void ConfigureServices(IServiceCollection services, BoardGamesShopSettings settings)
     {
         IdentityModelEventSource.ShowPII = true;
-        services.AddIdentity<UserEntity, UserRoleEntity>(options =>
+        services.AddIdentity<UserEntity, UserRole>(options =>
             {
                 options.Password.RequireDigit = true;
                 options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<BoardGamesShopDbContext>()
             .AddSignInManager<SignInManager<UserEntity>>()
-            .AddDefaultTokenProviders();
-
+            .AddDefaultTokenProviders()
+            .AddRoles<UserRole>();
+        
         services.AddIdentityServer()
             .AddInMemoryApiScopes([new ApiScope("api")])
             .AddInMemoryClients(
@@ -39,7 +41,14 @@ public static class AuthorizationConfigurator
                     ],
                     ClientSecrets = [new Secret(settings.ClientSecret.Sha256())],
                     AllowedScopes = ["api"]
-                }
+                },
+                new Client
+                {
+                    ClientId = "swagger",
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+                    ClientSecrets = [new Secret("swagger".Sha256())],
+                    AllowedScopes = ["api"]
+                },
             ])
             .AddAspNetIdentity<UserEntity>();
         
@@ -64,7 +73,6 @@ public static class AuthorizationConfigurator
             };
             options.Audience = "api";
         });
-
         services.AddAuthorization();
     }
 

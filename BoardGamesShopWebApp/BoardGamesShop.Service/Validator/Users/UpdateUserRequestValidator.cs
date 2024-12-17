@@ -17,13 +17,9 @@ public class UpdateUserRequestValidator : AbstractValidator<UpdateUserRequest>
             .Matches(@"^8\d{10}$")
             .WithMessage("Phone number is invalid");
 
-        RuleFor(x => x.Login)
+        RuleFor(x => x.UserName)
             .MaximumLength(50)
             .WithMessage("Login must be less than 50 characters");
-        
-        RuleFor(x => x.PasswordHash)
-            .MaximumLength(50)
-            .WithMessage("Password must be less than 255 characters");
         
         RuleFor(x => x.City)
             .MaximumLength(50)

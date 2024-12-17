@@ -22,25 +22,25 @@ public class RegisterUserRequestValidator : AbstractValidator<RegisterUserReques
             .Matches(@"^8\d{10}$")
             .WithMessage("Phone number is invalid");
 
-        RuleFor(x => x.Login)
+        RuleFor(x => x.UserName)
             .NotEmpty()
             .WithMessage("Login is required")
             .MaximumLength(50)
             .WithMessage("Login must be less than 50 characters");
         
-        RuleFor(x => x.PasswordHash)
+        RuleFor(x => x.Password)
             .NotEmpty()
             .WithMessage("Password is required")
             .MaximumLength(50)
             .WithMessage("Password must be less than 255 characters");
-        
+
         RuleFor(x => x.City)
             .NotEmpty()
             .WithMessage("City is required")
             .MaximumLength(50)
-            .WithMessage("City must be less than 50 characters")
-            .Matches(@"^[a-zA-Zа-яА-ЯёЁ-\s]+$")
-            .WithMessage("City is invalid");
+            .WithMessage("City must be less than 50 characters");
+           // .Matches(@"^[a-zA-Zа-яА-ЯёЁ\s-]+$")
+           // .WithMessage("City is invalid");
         
         RuleFor(x => x.LastName)
             .NotEmpty()

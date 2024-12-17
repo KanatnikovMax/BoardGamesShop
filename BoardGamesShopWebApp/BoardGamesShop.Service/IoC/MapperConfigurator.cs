@@ -15,6 +15,8 @@ public static class MapperConfigurator
             // board games
             config.AddProfile<BoardGamesBLProfile>();
             config.AddProfile<BoardGamesServiceProfile>();
+            // auth
+            config.AddProfile<AuthBLProfile>();
         });
     }
 }

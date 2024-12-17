@@ -13,6 +13,6 @@ AppConfigurator.ConfigureServices(builder, settings);
 
 var app = builder.Build();
 
-AppConfigurator.ConfigureApplication(app);
+await AppConfigurator.ConfigureApplication(app, settings);
 
 app.Run();

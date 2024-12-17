@@ -7,6 +7,7 @@ using BoardGamesShop.BusinessLogic.BoardGames.Providers;
 using BoardGamesShop.DataAccess.Entities;
 using BoardGamesShopWebApp.Controllers.BoardGames.Entities;
 using BoardGamesShopWebApp.Validator.BoardGames;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ILogger = Serilog.ILogger;
 
@@ -32,6 +33,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpPost]
     [Route("create")]
+    [Authorize]
     public async Task<ActionResult<BoardGame>> CreateBoardGame([FromQuery] CreateBoardGameRequest request)
     {
         var validationResult = await new CreateBoardGameRequestValidator().ValidateAsync(request);
@@ -109,6 +111,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpDelete]
     [Route("delete/{id:int}")]
+    [Authorize]
     public async Task<IActionResult> DeleteBoardGame([FromRoute] int id)
     {
         try
@@ -130,6 +133,7 @@ public class BoardGamesController : ControllerBase
 
     [HttpPut]
     [Route("update/{id:int}")]
+    [Authorize]
     public async Task<IActionResult> UpdateBoardGame([FromRoute] int id, [FromQuery] UpdateBoardGameRequest request)
     {
         var validationResult = await new UpdateBoardGameRequestValidator().ValidateAsync(request);

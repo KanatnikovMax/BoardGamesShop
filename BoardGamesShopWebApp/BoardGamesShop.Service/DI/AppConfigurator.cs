@@ -1,4 +1,5 @@
-﻿using BoardGamesShopWebApp.IoC;
+﻿using BoardGamesShopWebApp.Controllers.Authorization;
+using BoardGamesShopWebApp.IoC;
 using BoardGamesShopWebApp.Settings;
 
 namespace BoardGamesShopWebApp.DI;
@@ -17,13 +18,14 @@ public class AppConfigurator
         builder.Services.AddControllers();
     }
 
-    public static void ConfigureApplication(WebApplication app)
+    public static async Task ConfigureApplication(WebApplication app, BoardGamesShopSettings settings)
     {
         AuthorizationConfigurator.ConfigureApplication(app);
         SerilogConfigurator.ConfigureApplication(app);
         SwaggerConfigurator.ConfigureApplication(app);
         DbContextConfigurator.ConfigureApplication(app);
-
+        var repositoryInitializer = new RepositoryInitializer(settings);
+        await repositoryInitializer.InitializeRepository(app);
         app.MapControllers();
         //app.UseHttpsRedirection();
     }

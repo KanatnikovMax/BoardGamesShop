@@ -3,6 +3,7 @@ using BoardGamesShop.BusinessLogic.Users.Entities;
 using BoardGamesShop.BusinessLogic.Users.Exceptions;
 using BoardGamesShop.DataAccess.Entities;
 using BoardGamesShop.DataAccess.Repository;
+using Duende.IdentityServer.Models;
 
 namespace BoardGamesShop.BusinessLogic.Users.Managers;
 
@@ -17,40 +18,12 @@ public class UsersManager : IUsersManager
         _mapper = mapper;
     }
 
-    public UserModel CreateUser(CreateUserModel model)
-    {
-       var entity = _mapper.Map<UserEntity>(model);
-       try
-       {
-           entity = _usersRepository.Save(entity);
-           return _mapper.Map<UserModel>(entity);
-       }
-       catch (Exception e)
-       {
-           throw new UserAlreadyExistsException("User already exists");
-       }
-    }
-
-    public async Task<UserModel> CreateUserAsync(CreateUserModel model)
-    {
-        var entity = _mapper.Map<UserEntity>(model);
-        try
-        {
-            entity = await _usersRepository.SaveAsync(entity);
-            return _mapper.Map<UserModel>(entity);
-        }
-        catch (Exception e)
-        {
-            throw new UserAlreadyExistsException("User already exists");
-        }
-    }
-
     public void DeleteUser(int userId)
     {
         var entity = _usersRepository.GetById(userId);
         if (entity == null)
         {
-            throw new UserNotFoundException("User not found");
+            throw new BusinessLogicException(ResultCode.UserNotFound);
         }
         _usersRepository.Delete(entity);
     }
@@ -60,7 +33,7 @@ public class UsersManager : IUsersManager
         var entity = await _usersRepository.GetByIdAsync(userId);
         if (entity == null)
         {
-            throw new UserNotFoundException("User not found");
+            throw new BusinessLogicException(ResultCode.UserNotFound);
         }
         await _usersRepository.DeleteAsync(entity);
     }
@@ -71,7 +44,7 @@ public class UsersManager : IUsersManager
         var entity = _usersRepository.GetById(userId);
         if (entity == null)
         {
-            throw new UserNotFoundException("User not found");
+            throw new BusinessLogicException(ResultCode.UserNotFound);
         }
 
         entity = _mapper.Map<UpdateUserModel, UserEntity>(model, opts => opts.AfterMap(
@@ -81,8 +54,7 @@ public class UsersManager : IUsersManager
                 dest.ExternalId = entity.ExternalId;
                 dest.CreationTime = entity.CreationTime;
                 dest.Role = entity.Role;
-                dest.Login = src.Login is null ? entity.Login : dest.Login;
-                dest.PasswordHash = src.PasswordHash is null ? entity.PasswordHash : dest.PasswordHash;
+                dest.UserName = src.UserName is null ? entity.UserName : dest.UserName;
                 dest.City = src.City is null ? entity.City : dest.City;
                 dest.PhoneNumber = src.PhoneNumber is null ? entity.PhoneNumber : dest.PhoneNumber;
                 dest.Email = src.Email is null ? entity.Email : dest.Email;
@@ -97,7 +69,7 @@ public class UsersManager : IUsersManager
         }
         catch (Exception e)
         {
-            throw new UserAlreadyExistsException("User already exists");
+            throw new BusinessLogicException(ResultCode.UserAlreadyExists);
         }
     }
 
@@ -106,7 +78,7 @@ public class UsersManager : IUsersManager
         var entity = await _usersRepository.GetByIdAsync(userId);
         if (entity == null)
         {
-            throw new UserNotFoundException("User not found");
+            throw new BusinessLogicException(ResultCode.UserNotFound);
         }
 
         entity = _mapper.Map<UpdateUserModel, UserEntity>(model, opts => opts.AfterMap(
@@ -116,8 +88,7 @@ public class UsersManager : IUsersManager
                 dest.ExternalId = entity.ExternalId;
                 dest.CreationTime = entity.CreationTime;
                 dest.Role = entity.Role;
-                dest.Login = src.Login is null ? entity.Login : dest.Login;
-                dest.PasswordHash = src.PasswordHash is null ? entity.PasswordHash : dest.PasswordHash;
+                dest.UserName = src.UserName is null ? entity.UserName : dest.UserName;
                 dest.City = src.City is null ? entity.City : dest.City;
                 dest.PhoneNumber = src.PhoneNumber is null ? entity.PhoneNumber : dest.PhoneNumber;
                 dest.Email = src.Email is null ? entity.Email : dest.Email;
@@ -132,7 +103,7 @@ public class UsersManager : IUsersManager
         }
         catch (Exception e)
         {
-            throw new UserAlreadyExistsException("User already exists");
+            throw new BusinessLogicException(ResultCode.UserAlreadyExists);
         }
     }
 }

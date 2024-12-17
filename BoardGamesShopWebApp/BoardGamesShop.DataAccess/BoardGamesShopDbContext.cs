@@ -20,16 +20,15 @@ public class BoardGamesShopDbContext : DbContext
         modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("user_claims");
         modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("user_logins").HasNoKey();
         modelBuilder.Entity<IdentityUserToken<int>>().ToTable("user_tokens").HasNoKey();;
-        modelBuilder.Entity<UserRoleEntity>().ToTable("user_roles");
+        modelBuilder.Entity<UserRole>().ToTable("user_roles");
         modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("user_role_claims");
         modelBuilder.Entity<IdentityUserRole<int>>().ToTable("user_role_owners").HasNoKey();
         
         modelBuilder.Entity<UserEntity>().HasKey(x => x.Id);
         modelBuilder.Entity<UserEntity>().HasIndex(x => x.ExternalId).IsUnique();
-        modelBuilder.Entity<UserEntity>().HasIndex(x => x.Login).IsUnique();
+        modelBuilder.Entity<UserEntity>().HasIndex(x => x.UserName).IsUnique();
         modelBuilder.Entity<UserEntity>().HasIndex(x => x.PhoneNumber).IsUnique();
         modelBuilder.Entity<UserEntity>().HasIndex(x => x.Email).IsUnique();
-        modelBuilder.Entity<UserEntity>().HasIndex(x => x.PasswordHash).IsUnique();
         modelBuilder.Entity<PurchaseHistory>().HasKey(x => x.Id);
         modelBuilder.Entity<PurchaseHistory>()
             .HasOne(ph => ph.UserEntity)

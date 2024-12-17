@@ -229,7 +229,6 @@ namespace BoardGamesShop.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -239,7 +238,6 @@ namespace BoardGamesShop.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("EmailConfirmed")
@@ -249,11 +247,9 @@ namespace BoardGamesShop.DataAccess.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
@@ -261,10 +257,6 @@ namespace BoardGamesShop.DataAccess.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<DateTime>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
@@ -276,20 +268,18 @@ namespace BoardGamesShop.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Patronymic")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Role")
+                    b.Property<int>("RoleId")
                         .HasColumnType("integer");
 
                     b.Property<string>("SecurityStamp")
@@ -309,19 +299,18 @@ namespace BoardGamesShop.DataAccess.Migrations
                     b.HasIndex("ExternalId")
                         .IsUnique();
 
-                    b.HasIndex("Login")
-                        .IsUnique();
-
-                    b.HasIndex("PasswordHash")
-                        .IsUnique();
-
                     b.HasIndex("PhoneNumber")
+                        .IsUnique();
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("BoardGamesShop.DataAccess.Entities.UserRoleEntity", b =>
+            modelBuilder.Entity("BoardGamesShop.DataAccess.Entities.UserRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -494,6 +483,17 @@ namespace BoardGamesShop.DataAccess.Migrations
                     b.Navigation("BoardGame");
 
                     b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("BoardGamesShop.DataAccess.Entities.UserEntity", b =>
+                {
+                    b.HasOne("BoardGamesShop.DataAccess.Entities.UserRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("GameDayUserEntity", b =>
