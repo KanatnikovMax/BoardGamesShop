@@ -5,7 +5,7 @@ namespace BoardGamesShop.BusinessLogic.BoardGames.Managers;
 public interface IBoardGamesManager
 {
     BoardGameModel CreateBoardGame(CreateBoardGameModel model);
-    Task<BoardGameModel> CreateUBoardGameAsync(CreateBoardGameModel model);
+    Task<BoardGameModel> CreateBoardGameAsync(CreateBoardGameModel model);
     void DeleteBoardGame(int id);
     Task DeleteBoardGameAsync(int id);
     BoardGameModel UpdateBoardGame(UpdateBoardGameModel model, int id);
