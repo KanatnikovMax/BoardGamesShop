@@ -16,3 +16,5 @@ var app = builder.Build();
 await AppConfigurator.ConfigureApplication(app, settings);
 
 app.Run();
+
+public partial class Program;
