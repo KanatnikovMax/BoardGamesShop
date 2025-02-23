@@ -1,0 +1,29 @@
+﻿version: '3.8'
+
+services:
+  db:
+    container_name: data-access
+    image: postgres:17.0-alpine3.20
+    environment:
+      POSTGRES_DB: "BoardGamesShopDb"
+      POSTGRES_USER: "BoardGamesShop"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/db-volume"
+    ports:
+      - "4321:5432"
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    restart: always
+    
+  backend:
+    container_name: board-games-shop-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - "8081:8081"
+    depends_on:
+      - db
+    
+volumes:
+  db-volume:
