@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGamesShop.DataAccess",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGamesShop.BusinessLogic", "BoardGamesShop.BusinessLogic\BoardGamesShop.BusinessLogic.csproj", "{3A9FB714-73D3-4E37-912C-34EF0074FBA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGamesShop.BusinessLogic.UnitTests", "BoardGamesShop.BusinessLogic.UnitTests\BoardGamesShop.BusinessLogic.UnitTests.csproj", "{56B2A83B-2D8C-4F59-B127-168DB99511A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardGamesShop.Service.Tests", "BoardGamesShop.Service.Tests\BoardGamesShop.Service.Tests.csproj", "{0FBE8883-8B5D-4EB9-89D4-BECB79A4CBD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{3A9FB714-73D3-4E37-912C-34EF0074FBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A9FB714-73D3-4E37-912C-34EF0074FBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A9FB714-73D3-4E37-912C-34EF0074FBA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56B2A83B-2D8C-4F59-B127-168DB99511A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56B2A83B-2D8C-4F59-B127-168DB99511A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56B2A83B-2D8C-4F59-B127-168DB99511A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56B2A83B-2D8C-4F59-B127-168DB99511A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FBE8883-8B5D-4EB9-89D4-BECB79A4CBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FBE8883-8B5D-4EB9-89D4-BECB79A4CBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FBE8883-8B5D-4EB9-89D4-BECB79A4CBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FBE8883-8B5D-4EB9-89D4-BECB79A4CBD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

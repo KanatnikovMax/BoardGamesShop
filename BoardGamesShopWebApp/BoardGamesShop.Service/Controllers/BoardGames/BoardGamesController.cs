@@ -52,7 +52,7 @@ public class BoardGamesController : ControllerBase
         var createBoardGameModel = _mapper.Map<CreateBoardGameModel>(request);
         try
         {
-            var boardGameModel = await _boardGamesManager.CreateUBoardGameAsync(createBoardGameModel);
+            var boardGameModel = await _boardGamesManager.CreateBoardGameAsync(createBoardGameModel);
             return Ok(new BoardGamesListResponse
             {
                 BoardGames = [boardGameModel]

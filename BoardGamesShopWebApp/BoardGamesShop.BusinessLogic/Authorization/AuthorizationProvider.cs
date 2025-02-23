@@ -60,8 +60,6 @@ public class AuthorizationProvider : IAuthorizationProvider
                 string.Join(Environment.NewLine, createResult.Errors.Select(e => e.Description)));
         }
         
-        await _userManager.AddToRoleAsync(user, model.Role.ToString());
-        
         return _mapper.Map<UserModel>(user);
     }
 

@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿﻿using AutoMapper;
 using BoardGamesShop.BusinessLogic.Authorization;
 using BoardGamesShop.BusinessLogic.BoardGames.Managers;
 using BoardGamesShop.BusinessLogic.BoardGames.Providers;

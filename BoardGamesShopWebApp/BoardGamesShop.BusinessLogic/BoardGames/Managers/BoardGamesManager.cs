@@ -32,7 +32,7 @@ public class BoardGamesManager : IBoardGamesManager
         }
     }
 
-    public async Task<BoardGameModel> CreateUBoardGameAsync(CreateBoardGameModel model)
+    public async Task<BoardGameModel> CreateBoardGameAsync(CreateBoardGameModel model)
     {
         var entity = _mapper.Map<BoardGame>(model);
         try
